@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screener.in Query Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="icon">📊</span>
+                    Screener.in Query Interface
+                </h1>
+                <p class="subtitle">Enter SQL-like queries to search stocks on Screener.in using Firecrawl</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="query-section">
+                <div class="query-header">
+                    <h2>Enter Your Query</h2>
+                    <button class="example-btn" onclick="fillExampleQuery()">Use Example Query</button>
+                </div>
+                
+                <div class="query-input-container">
+                    <textarea 
+                        id="sqlQuery" 
+                        placeholder="Enter your SQL-like query here...
+Example:
+Market Capitalization > 30000 AND 
+Price to earning > 15 AND 
+Return on capital employed > 22% AND
+Return on equity > 20 AND 
+Debt to equity < 1"
+                        rows="8"
+                    ></textarea>
+                </div>
+                
+                <div class="button-container">
+                    <button class="search-btn" onclick="executeQuery()">
+                        <span class="btn-text">Search Stocks (Public)</span>
+                        <span class="loading-spinner" style="display: none;">🔄</span>
+                    </button>
+                    <button class="redirect-btn" onclick="redirectToScreener()">
+                        <span>🔗 Open in Screener.in</span>
+                    </button>
+                    <button class="auth-btn" onclick="toggleAuthForm()">
+                        <span>🔐 Use Screener.in Account</span>
+                    </button>
+                    <button class="test-btn" onclick="testFirecrawl()">Test Connection</button>
+                </div>
+                
+                <div id="authForm" class="auth-form" style="display: none;">
+                    <div class="auth-header">
+                        <h3>Screener.in Authentication</h3>
+                        <p>Enter your Screener.in credentials for full access to screening results</p>
+                    </div>
+                    <div class="auth-inputs">
+                        <input type="email" id="screenerEmail" placeholder="Enter your Screener.in email" />
+                        <input type="password" id="screenerPassword" placeholder="Enter your password" />
+                        <div class="auth-buttons">
+                            <button class="auth-search-btn" onclick="executeAuthenticatedQuery()">
+                                <span class="btn-text">Search with Authentication</span>
+                                <span class="loading-spinner" style="display: none;">🔄</span>
+                            </button>
+                            <button class="cancel-btn" onclick="toggleAuthForm()">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="auth-notice">
+                        <p><strong>Note:</strong> Your credentials are only used to authenticate with Screener.in and are not stored.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header" style="display: none;">
+                    <h2>Results</h2>
+                    <div class="results-info">
+                        <span id="resultsCount">0 stocks found</span>
+                        <a id="screenerLink" href="#" target="_blank" class="screener-link">View on Screener.in</a>
+                    </div>
+                </div>
+                
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Fetching data from Screener.in...</p>
+                </div>
+                
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <div id="authNotice" class="auth-notice-box" style="display: none;">
+                    <div class="notice-content">
+                        <h3>🔒 Authentication Required</h3>
+                        <p>Screener.in requires login to access detailed screening results. Here are your options:</p>
+                        <ul>
+                            <li><strong>Option 1:</strong> Click "Use Screener.in Account" above to login with your credentials</li>
+                            <li><strong>Option 2:</strong> <a href="https://www.screener.in/register/" target="_blank">Create a free Screener.in account</a></li>
+                            <li><strong>Option 3:</strong> View the generated query URL below to manually check results</li>
+                        </ul>
+                        <div class="notice-actions">
+                            <button class="notice-btn" onclick="hideAuthNotice()">Got it</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="resultsContainer" class="results-container" style="display: none;">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="showTab('table')">Table View</button>
+                        <button class="tab-btn" onclick="showTab('raw')">Raw Data</button>
+                        <button class="tab-btn" onclick="showTab('markdown')">Markdown</button>
+                    </div>
+                    
+                    <div id="tableTab" class="tab-content active">
+                        <div id="tableContainer" class="table-container"></div>
+                    </div>
+                    
+                    <div id="rawTab" class="tab-content">
+                        <pre id="rawData" class="raw-data"></pre>
+                    </div>
+                    
+                    <div id="markdownTab" class="tab-content">
+                        <pre id="markdownData" class="markdown-data"></pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
