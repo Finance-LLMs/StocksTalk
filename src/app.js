@@ -777,14 +777,17 @@ async function startConversation() {
             onMessage: (message) => {
                 console.log('Received message:', message);
                 if (message.source === 'ai' && message.message) {
-                    lastAIResponse = message.message;
-                    console.log('AI response captured:', lastAIResponse);
+                    console.log('AI response received:', message.message);
                     
-                    // If we're waiting for a SQL query response, process it
+                    // Only capture and process if we're specifically waiting for a SQL query response
                     if (waitingForSQLResponse && sqlQueryRequested) {
                         console.log('Processing SQL query from AI response');
+                        lastAIResponse = message.message;
                         processSQLResponse(lastAIResponse);
                         waitingForSQLResponse = false;
+                    } else {
+                        // For regular conversation, just log the response
+                        console.log('Regular conversation message, not processing as SQL');
                     }
                 }
             },
@@ -895,7 +898,13 @@ async function generateSQLQuery() {
         try {
             // Set flags to indicate we're expecting a SQL query
             sqlQueryRequested = true;
-            waitingForSQLResponse = true;
+            
+            // Add a small delay before setting waitingForSQLResponse to avoid
+            // capturing any immediate acknowledgment responses
+            setTimeout(() => {
+                waitingForSQLResponse = true;
+                console.log('Now waiting for SQL query response from AI');
+            }, 500);
             
             // Disable the SQL query button and add loading indicator
             const sqlButton = document.getElementById('sqlQueryButton');
@@ -918,8 +927,8 @@ async function generateSQLQuery() {
             
             // Send a message to the AI asking for SQL query generation
             try {
-                // Prepare the SQL query generation prompt
-                const summaryPrompt = "Generate the SQL query based on the conversation we just had";
+                // Prepare the SQL query generation prompt with more specific instructions
+                const summaryPrompt = "Generate a SQL query for stock screening based on our conversation. Please provide only the SQL query conditions without any explanations, formatted like: Market Capitalization > 5000 AND Price to earning < 15";
                 
                 // Method 1: Using sendTextMessage (original method)
                 if (typeof conversation.sendTextMessage === 'function') {
@@ -1021,7 +1030,9 @@ async function generateSQLQuery() {
 // Function to process AI response for SQL query and redirect to screener
 async function processSQLResponse(responseText) {
     try {
-        console.log('Processing AI response for SQL query:', responseText);
+        console.log('=== PROCESSING SQL RESPONSE ===');
+        console.log('Raw AI response:', responseText);
+        console.log('Response length:', responseText.length);
         
         // Extract SQL query from the AI response
         // The AI might return the SQL in various formats, so we need to be flexible
@@ -1040,14 +1051,18 @@ async function processSQLResponse(responseText) {
         // Extract content between quotes if present
         const quotedMatch = sqlQuery.match(/["'`]([^"'`]+)["'`]/);
         if (quotedMatch) {
+            console.log('Found quoted content:', quotedMatch[1]);
             sqlQuery = quotedMatch[1];
         }
         
         // If the response contains multiple lines, try to find the actual SQL query
         const lines = sqlQuery.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        console.log('Response lines:', lines);
+        
         for (const line of lines) {
             // Look for lines that look like SQL conditions
             if (line.match(/\w+\s*[><=]+\s*\d+|\w+\s+(AND|OR)\s+\w+/i)) {
+                console.log('Found SQL-like line:', line);
                 sqlQuery = line;
                 break;
             }
@@ -1058,11 +1073,15 @@ async function processSQLResponse(responseText) {
         sqlQuery = sqlQuery.replace(/^\s*[-*]\s*/, ''); // Remove bullet points
         sqlQuery = sqlQuery.replace(/[.!?]*$/, ''); // Remove trailing punctuation
         
-        console.log('Extracted SQL query:', sqlQuery);
+        console.log('Final extracted SQL query:', sqlQuery);
+        console.log('SQL query length:', sqlQuery.length);
         
         if (!sqlQuery || sqlQuery.length < 5) {
+            console.error('Invalid SQL query extracted');
             throw new Error('No valid SQL query found in AI response. AI response was: ' + responseText.substring(0, 200));
         }
+        
+        console.log('Sending to backend for URL conversion...');
         
         // Send SQL query to backend for URL conversion
         const response = await fetch('/api/sql-to-url', {
@@ -1085,7 +1104,7 @@ async function processSQLResponse(responseText) {
         window.open(url, '_blank');
         
         // Show success message
-        alert('SQL query generated successfully! Opening Screener.in in a new tab.');
+        console.log('SQL query processed successfully!');
         
         // Reset the SQL query button and flags
         sqlQueryRequested = false;
@@ -1299,14 +1318,17 @@ async function startQnA() {
             onMessage: (message) => {
                 console.log('Q&A Received message:', message);
                 if (message.source === 'ai' && message.message) {
-                    lastAIResponse = message.message;
-                    console.log('Q&A AI response captured:', lastAIResponse);
+                    console.log('Q&A AI response received:', message.message);
                     
-                    // If we're waiting for a SQL query response, process it
+                    // Only capture and process if we're specifically waiting for a SQL query response
                     if (waitingForSQLResponse && sqlQueryRequested) {
                         console.log('Processing SQL query from Q&A AI response');
+                        lastAIResponse = message.message;
                         processSQLResponse(lastAIResponse);
                         waitingForSQLResponse = false;
+                    } else {
+                        // For regular Q&A conversation, just log the response
+                        console.log('Regular Q&A message, not processing as SQL');
                     }
                 }
             },
