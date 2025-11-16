@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversational Insurance Agents</title>
+    <meta name="description" content="Have real-time conversations with AI insurance advisors" />
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/avatar.css">
+    <link rel="stylesheet" href="/static/market-themes.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #1a4d3a;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+
+        .debate-container {
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .debate-interface {
+            display: flex;
+            height: auto;
+            max-height: 600px;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .control-card {
+            flex: 0 0 280px;
+            max-width: 280px;
+            min-width: 260px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.25), rgba(255, 215, 0, 0.2));
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            box-shadow: 0 20px 40px rgba(255, 153, 51, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .avatar-card {
+            flex: 1;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(19, 136, 8, 0.2), rgba(255, 153, 51, 0.25));
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            box-shadow: 0 20px 40px rgba(19, 136, 8, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, rgba(255, 153, 51, 0.4), rgba(255, 215, 0, 0.4));
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .header-icon {
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.6), rgba(19, 136, 8, 0.6));
+            padding: 4px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .header-icon svg {
+            color: #FFFFFF;
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0 2px 4px rgba(229, 62, 62, 0.7));
+        }
+
+        .header-text h2 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 2px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-text p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            font-size: 0.7rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .finance-header {
+            background: linear-gradient(90deg, rgba(255, 153, 51, 0.7), rgba(255, 215, 0, 0.7));
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 215, 0, 0.8);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .finance-header h1 {
+            color: #000;
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+        }
+
+        .form-controls {
+            margin-bottom: 12px;
+        }
+
+        .control-group {
+            margin-bottom: 10px;
+        }
+
+        .control-group label {
+            display: block;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+        }
+
+        .control-select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid rgba(229, 62, 62, 0.6);
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(229, 62, 62, 0.2));
+            color: white;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-select option {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+        }
+
+        .control-select:focus {
+            outline: none;
+            border-color: rgba(229, 62, 62, 0.9);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(229, 62, 62, 0.3));
+            box-shadow: 0 0 15px rgba(229, 62, 62, 0.5);
+        }
+
+        .opponent-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .opponent-button {
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.3), rgba(255, 215, 0, 0.3));
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 10px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .opponent-button:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.5), rgba(255, 215, 0, 0.4));
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .opponent-button.selected {
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.7), rgba(255, 215, 0, 0.7));
+            border-color: rgba(255, 215, 0, 1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .opponent-name {
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+            text-align: center;
+        }
+
+        .opponent-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.65rem;
+            text-align: center;
+        }
+
+        .ai-text {
+            color: #FFD700;
+            font-weight: 800;
+        }
+
+        .button-row, .recording-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .record-button, .qna-button, #startScriptedAI {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        #startScriptedAI, .qna-button {
+            background: linear-gradient(135deg, #FF9933, #FFD700);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #startScriptedAI:hover, .qna-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.6);
+            background: linear-gradient(135deg, #FFD700, #FF9933);
+        }
+
+        .record-button {
+            background: linear-gradient(135deg, #FF9933, #138808);
+            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .record-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 153, 51, 0.6);
+            background: linear-gradient(135deg, #FF9933, #FFD700);
+        }
+
+        .stop-button {
+            background: linear-gradient(135deg, #138808, #FF9933) !important;
+            box-shadow: 0 10px 20px rgba(19, 136, 8, 0.6) !important;
+        }
+
+        .summary-button {
+            background: linear-gradient(135deg, #FF9933, #138808) !important;
+            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.4) !important;
+        }
+
+        .record-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .avatar-wrapper {
+            width: 100%;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .no-agent-message {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .celebrity-avatar-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .celebrity-video {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+            border: 3px solid rgba(255, 215, 0, 0.6);
+        }
+
+        .speaking-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4px;
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.9), rgba(255, 215, 0, 0.9));
+            padding: 8px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .speaking-wave {
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to top, #FFFFFF, #FF9933);
+            border-radius: 2px;
+            animation: wave 1.4s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(255, 153, 51, 0.7);
+        }
+
+        .speaking-wave:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .speaking-wave:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.5); }
+        }
+
+        #connectionStatus, #speakingStatus {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        #speakingStatus {
+            top: 60px;
+        }
+
+        #connectionStatus.connected {
+            background: linear-gradient(135deg, rgba(255, 153, 51, 0.9), rgba(19, 136, 8, 0.9));
+            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #speakingStatus.speaking {
+            background: linear-gradient(135deg, rgba(19, 136, 8, 0.9), rgba(255, 153, 51, 0.9));
+            box-shadow: 0 4px 15px rgba(19, 136, 8, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .debate-container {
+                padding: 6px;
+            }
+            
+            .footer-disclaimer {
+                font-size: 0.65rem;
+                padding: 10px 12px;
+                margin: 15px auto 0;
+                max-width: 95%;
+            }
+            
+            .debate-interface {
+                flex-direction: column;
+                gap: 6px;
+            }
+            
+            .control-card, .avatar-card {
+                max-width: 100%;
+                min-width: auto;
+                padding: 10px;
+            }
+            
+            .opponent-buttons {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            
+            .language-buttons {
+                gap: 3px;
+            }
+            
+            .language-button {
+                padding: 6px;
+            }
+            
+            .language-name {
+                font-size: 0.6rem;
+            }
+
+            .header-text h2 {
+                font-size: 1rem;
+            }
+
+            .header-text p {
+                font-size: 0.65rem;
+            }
+
+            .opponent-button {
+                padding: 6px;
+            }
+
+            .opponent-name {
+                font-size: 0.7rem;
+            }
+
+            .opponent-desc {
+                font-size: 0.6rem;
+            }
+
+            .record-button, .qna-button, #startScriptedAI {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="debate-container">
+        <div class="finance-header">
+            <h1>Conversational Insurance Agents</h1>
+        </div>
+        
+        <div id="connectionStatus" class="hidden">Disconnected</div>
+        <div id="speakingStatus" class="hidden">Agent Silent</div>
+        
+        <!-- Main Debate Interface -->
+        <div class="debate-interface">
+            <!-- Left Panel: Controls -->
+            <div class="control-card">
+                <div class="card-header">
+                    <div class="header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                            <path d="M12 14l-6.16-3.422a12.083 12.083 0 00-.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 006.824-2.998 12.078 12.078 0 00-.665-6.479L12 14z"></path>
+                        </svg>
+                    </div>                    <div class="header-text">
+                        <h2>Insurance Advisors</h2>
+                        <p>Have conversations with AI insurance experts</p>
+                    </div>
+                </div>
+
+                <div class="form-controls">
+                    
+                    <div class="control-group">
+                        <label>Choose Your Advisor</label>
+                        <div class="opponent-buttons">
+                            <button type="button" class="opponent-button" data-opponent="akshat">
+                                <img src="/static/flags/singapore.png" alt="Singapore Flag" class="flag-icon">
+                                <div class="opponent-info">
+                                    <div class="opponent-name"><span class="ai-text">AI</span>kshat</div>
+                                    <div class="opponent-desc">Singapore</div>
+                                </div>
+                            </button>
+                            <button type="button" class="opponent-button" data-opponent="vikranth">
+                                <img src="/static/flags/india.png" alt="Indian Flag" class="flag-icon">
+                                <div class="opponent-info">
+                                    <div class="opponent-name">V<span class="ai-text">AI</span>kranth</div>
+                                    <div class="opponent-desc">India</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>                <div class="recording-section">                    <button id="startButton" class="record-button" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 8-9.04 4.9a2.78 2.78 0 0 0 0 4.9L12 24l9.04-4.9a2.78 2.78 0 0 0 0-4.9L12 8Z"/>
+                        </svg>
+                        Start Insurance Consultation
+                    </button>                    <button id="endButton" class="record-button stop-button" disabled style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="m9 9 6 6"/>
+                            <path d="m15 9-6 6"/>
+                        </svg>
+                        End Consultation
+                    </button>
+                    <button id="summaryButton" class="record-button summary-button" disabled style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        Close Conversation
+                    </button>
+                    <button id="sqlQueryButton" class="record-button sql-query-button" disabled style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            <path d="M8 7h8"></path>
+                            <path d="M8 11h8"></path>
+                        </svg>
+                        Generate SQL Query
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Panel: Avatar -->
+            <div class="avatar-card">
+                <div id="animatedAvatar" class="avatar-wrapper">
+                    <div class="no-agent-message">
+                        Select a financial advisor to begin
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+            <script src="/static/app-bundle.js"></script>
+    <script>
+        let selectedAgent = null;
+        let currentTopic = '';
+        
+        // Agent selection functionality
+        document.querySelectorAll('.opponent-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove selection from all buttons
+                document.querySelectorAll('.opponent-button').forEach(b => b.classList.remove('selected'));
+                
+                // Add selection to clicked button
+                this.classList.add('selected');
+                
+                // Store selected agent
+                selectedAgent = this.dataset.agent;
+                
+                // Enable buttons
+                updateButtonStates();
+                
+                // Show avatar
+                showAgentAvatar(selectedAgent);
+            });
+        });
+        
+        // Topic selection functionality
+        document.getElementById('topic').addEventListener('change', function() {
+            currentTopic = this.value;
+            updateButtonStates();
+        });
+        
+        function updateButtonStates() {
+            const startButton = document.getElementById('startButton');
+            const hasAgent = selectedAgent !== null;
+            const hasTopic = currentTopic.length > 0;
+            
+            if (startButton) {
+                startButton.disabled = !hasAgent || !hasTopic;
+            }
+        }
+        
+        function showAgentAvatar(agent) {
+            const container = document.getElementById('avatarContainer');
+            
+            // Create avatar based on agent
+            if (agent === 'akshat') {
+                container.innerHTML = `
+                    <div class="celebrity-avatar-container">
+                        <video 
+                            src="/static/videos/akshat.mp4" 
+                            class="celebrity-video"
+                            muted
+                            loop
+                            playsinline
+                            preload="auto"
+                            id="avatarVideo"
+                            style="display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 15px;"
+                        ></video>
+                        <div class="speaking-indicator" id="speakingIndicator" style="display: none;">
+                            <div class="speaking-wave"></div>
+                            <div class="speaking-wave"></div>
+                            <div class="speaking-wave"></div>
+                        </div>
+                    </div>
+                `;
+            } else if (agent === 'vikranth') {
+                container.innerHTML = `
+                    <div class="celebrity-avatar-container">
+                        <video 
+                            src="/static/videos/vikranth.mp4" 
+                            class="celebrity-video"
+                            muted
+                            loop
+                            playsinline
+                            preload="auto"
+                            id="avatarVideo"
+                            style="display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 15px;"
+                        ></video>
+                        <div class="speaking-indicator" id="speakingIndicator" style="display: none;">
+                            <div class="speaking-wave"></div>
+                            <div class="speaking-wave"></div>
+                            <div class="speaking-wave"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Setup video events
+            const video = document.getElementById('avatarVideo');
+            if (video) {
+                video.addEventListener('loadeddata', () => {
+                    console.log('Avatar video loaded successfully');
+                });
+                
+                video.addEventListener('error', (e) => {
+                    console.error('Avatar video error:', e);
+                });
+            }
+        }
+        
+        // Make functions available globally for the main app bundle
+        window.selectedAgent = () => selectedAgent;
+        window.currentTopic = () => currentTopic;
+        window.updateButtonStates = updateButtonStates;
+        window.showAgentAvatar = showAgentAvatar;
+    </script>
+</body>
+</html>

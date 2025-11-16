@@ -1,216 +1,153 @@
-# Screener.in Query Interface
+# Conversational Insurance Agents
 
-A web interface that uses Firecrawl to query Screener.in with SQL-like syntax and display stock screening results in a beautiful dashboard.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)
 
-## Features
+An interactive conversational AI platform that enables users to engage in insurance consultations with AI insurance experts for India and Singapore. Built with ElevenLabs Conversational AI SDK, this application features multiple AI insurance advisors with distinct insurance packages and expertise areas.
 
-- 🔍 **SQL-like Query Interface**: Enter queries in natural SQL format
-- 🌐 **Firecrawl Integration**: Automatically scrapes Screener.in results
-- 📊 **Multiple View Modes**: Table view, raw data, and markdown
-- 📱 **Responsive Design**: Works on desktop and mobile
-- ⚡ **Real-time Results**: Get live data from Screener.in
+## ✨ Features
 
-## Setup Instructions
+- **Single Interface Mode**: Clean, professional dashboard interface for insurance consultations
+- **Insurance Consultation**: Get personalized investment advice and insurance insights
+- **Real-time Voice Conversation**: Powered by ElevenLabs' advanced voice AI technology
+- **Video Avatars**: High-quality video representations of each insurance expert
+- **Speaking Indicators**: Visual feedback showing when AI experts are responding
+- **Responsive Design**: Works seamlessly across desktop and mobile devices
 
-### 1. Prerequisites
+## 💼 Available Insurance Experts
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Firecrawl API key
+- **Akshat**: Singapore Expert - Specialized on Singapore insurance area
+- **Vikranth**: India Expert - Specialized on Singapore insurance area
 
-### 2. Get Firecrawl API Key
+## 🚀 Technology Stack
 
-1. Go to [Firecrawl.dev](https://firecrawl.dev)
-2. Sign up for an account
-3. Get your API key from the dashboard
+### Frontend
+- **Vanilla JavaScript** with modern ES6+ features
+- **Webpack** for module bundling and development server
+- **CSS3** with responsive glassmorphic design patterns
+- **Multi-language Support** with Unicode text rendering
+- **HTML5** with semantic structure and accessibility features
 
-### 3. Installation
+### Backend
+- **Node.js/Express** server for API endpoints with language routing
+- **ElevenLabs API** integration for multi-language conversational AI
+- **Environment-based Configuration** for secure API key management
+- **CORS** enabled for cross-origin requests
 
-1. **Clone or navigate to the project directory**
-   ```bash
-   cd "c:\Users\Akshat\Desktop\Screener"
-   ```
+### AI & Language Features
+- **Real-time Voice Processing** with ElevenLabs SDK
+- **Language-specific Agent Routing** based on user selection
+- **Cultural Context Awareness** in AI responses
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## 📋 Prerequisites
 
-3. **Set up environment variables**
-   ```bash
-   copy .env.example .env
-   ```
-   
-   Then edit the `.env` file and add your Firecrawl API key:
-   ```
-   FIRECRAWL_API_KEY=your_actual_firecrawl_api_key_here
-   PORT=3000
-   ```
+Before running this application, ensure you have:
 
-4. **Start the server**
-   ```bash
-   npm start
-   ```
-   
-   For development with auto-restart:
-   ```bash
-   npm run dev
-   ```
+- **Node.js** (version 18 or higher)
+- **ElevenLabs API Key** - [Get your key here](https://elevenlabs.io/)
+- **Git** for cloning the repository
 
-5. **Open your browser**
-   Navigate to `http://localhost:3000`
+## 🛠️ Installation & Setup
 
-## Usage
-
-### Example Query Format
-
-```sql
-Market Capitalization > 30000 AND 
-Price to earning > 15 AND 
-Return on capital employed > 22% AND
-Return on equity > 20 AND 
-Debt to equity < 1
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Finance-LLMs/Conversational-Insurance-Agents.git
+cd Conversational-Insurance-Agents
 ```
 
-### Supported Query Parameters
-
-- **Market Capitalization**: `Market Capitalization > value`
-- **Price to Earning**: `Price to earning > value`
-- **Return on Capital Employed**: `Return on capital employed > value%`
-- **Return on Equity**: `Return on equity > value`
-- **Debt to Equity**: `Debt to equity < value`
-
-### Query Operators
-
-- `>` (greater than)
-- `<` (less than)
-- `AND` (combine conditions)
-
-## API Endpoints
-
-### POST `/api/screener/query`
-Execute a stock screening query.
-
-**Request Body:**
-```json
-{
-    "sqlQuery": "Market Capitalization > 30000 AND Price to earning > 15"
-}
-```
-
-**Response:**
-```json
-{
-    "success": true,
-    "query": "Market Capitalization > 30000 AND Price to earning > 15",
-    "screenerUrl": "https://www.screener.in/screen/raw/...",
-    "data": {
-        "rawHtml": "...",
-        "markdown": "...",
-        "tableData": [...],
-        "metadata": {...}
-    }
-}
-```
-
-### GET `/api/screener/test`
-Test Firecrawl API connection.
-
-## Project Structure
-
-```
-screener-firecrawl-interface/
-├── public/
-│   ├── index.html          # Main HTML file
-│   ├── styles.css          # CSS styles
-│   └── script.js           # Frontend JavaScript
-├── routes/
-│   └── screener.js         # API routes
-├── server.js               # Express server
-├── package.json            # Dependencies
-├── .env.example           # Environment variables template
-└── README.md              # This file
-```
-
-## Important Note: Authentication Required
-
-⚠️ **Screener.in requires login to access detailed screening results.** The interface now provides multiple options to handle this:
-
-### Access Options
-
-1. **🔓 Public Access**: Limited data from publicly accessible pages
-2. **🔐 Authenticated Access**: Full screening results using your Screener.in credentials
-3. **🔗 Manual Access**: Generated query URLs that you can open directly in Screener.in
-
-### Getting Screener.in Account
-
-If you don't have a Screener.in account:
-
-1. Visit [Screener.in Registration](https://www.screener.in/register/)
-2. Create a free account
-3. Use your credentials in the "🔐 Use Screener.in Account" option
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"Authentication Required"**
-   - This is expected behavior - Screener.in requires login for detailed results
-   - Use the "🔐 Use Screener.in Account" button to authenticate
-   - Or create a free account at Screener.in
-   - You can also click the generated URL to view results manually
-
-2. **"Firecrawl API key not configured"**
-   - Make sure you've created a `.env` file
-   - Verify your API key is correct
-   - Restart the server after adding the API key
-
-3. **"Authentication failed"**
-   - Double-check your Screener.in email and password
-   - Make sure your Screener.in account is active
-   - Try logging in directly on Screener.in first
-
-4. **"Failed to scrape Screener.in"**
-   - Check your internet connection
-   - Verify Firecrawl service is working with the test button
-   - The Screener.in website structure might have changed
-
-5. **No table data showing**
-   - Try using authenticated access for better results
-   - The website structure might have changed
-   - Check the raw data tab to see what was scraped
-   - Use the generated URL to check results manually
-
-### Development Mode
-
-For development with automatic restarts:
+### 2. Environment Configuration
+Create a `.env` file in the root directory and configure your API keys:
 
 ```bash
-npm install -g nodemon
+# Windows
+notepad .env
+
+# Linux/macOS
+vim .env
+```
+
+Add the following environment variables:
+```env
+API_KEY=`your_api_key`
+
+# Country-specific Agents
+SINGAPORE_AGENT_ID=`singapore_agent_id`     # Akshat - Singapore
+INDIA_AGENT_ID=`india_agent_id`             # Vikranth - India
+```
+
+### 3. Install Dependencies
+
+**Frontend Dependencies:**
+```bash
+npm install
+```
+
+### 4. Build and Run
+
+**Option A: Node.js Backend (Recommended)**
+```bash
+npm start
+```
+
+**Option B: Development Mode with Hot Reload**
+```bash
 npm run dev
 ```
 
-## Contributing
+### 5. Access the Application
+Open your browser and navigate to:
+```
+http://localhost:3000
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+## 🎯 Usage Guide
 
-## License
+1. **Access the Dashboard**: Open the application to see the Conversation Insurance Agents
+3. **Select Country Advisor**: Choose from available AI insurance advisors (Akshat for Singapore or Vikranth for India)
+4. **Start Consultation**: Click "Start Insurance Consultation" to begin your voice conversation
+5. **Insurance Discussion**: Ask questions about different insurance policies, the evolving area of insurance or seek insurance advice
+6. **End Session**: Click "End Consultation" when finished
 
-MIT License - see LICENSE file for details.
+## 🏗️ Project Structure
 
-## Support
+```
+Conversational-Insurance-Agents/
+├── backend/
+│   └── server.js           # Express.js server with multi-language routing
+├── src/
+│   ├── index.html          # Main dashboard with language selection
+│   ├── app.js              # Core application logic
+│   ├── styles.css          # Global styles with responsive design
+│   └── videos/             # Expert video avatars
+│       ├── akshat.mp4      # Akshat video
+│       └── vikranth.mp4    # Vikranth video
+├── dist/                   # Webpack build output
+├── .env                    # Environment variables (not committed)
+├── .gitignore              # Git ignore rules
+├── package.json            # Node.js dependencies and scripts
+├── webpack.config.js       # Webpack configuration
+└── README.md               # This file
+```
 
-If you encounter any issues:
+## 🔧 Development
 
-1. Check the troubleshooting section above
-2. Verify your Firecrawl API key is working
-3. Test with the example query first
-4. Check browser console for errors
+### Available Scripts
 
----
+- `npm start` - Build and run production server
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm run start:backend` - Start only the Node.js backend
 
-**Note**: This tool is for educational and research purposes. Please respect Screener.in's terms of service and use responsibly.
+### Development Guidelines
+
+1. Follow modern JavaScript ES6+ standards
+2. Maintain responsive design principles across all screen sizes
+3. Ensure multi-language support and Unicode text handling
+4. Test across different browsers, devices, and language settings
+5. Maintain SEBI compliance and educational disclaimers
+6. Ensure API key security and never commit secrets to version control
+7. Follow cultural sensitivity guidelines for multi-language content
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

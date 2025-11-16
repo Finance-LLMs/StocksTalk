@@ -1,25 +1,23 @@
 {
-  "name": "screener-firecrawl-interface",
+  "name": "conversational-insurance-agents",
   "version": "1.0.0",
-  "description": "Web interface to query Screener.in using Firecrawl",
-  "main": "server.js",
+  "description": "Interactive AI platform for insurance consultations with AI advisors",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "echo 'Build completed'"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
+    "start:backend": "node backend/server.js",
+    "build": "webpack --mode production",
+    "dev": "concurrently \"npm run start:backend\" \"webpack serve --mode development\"",
+    "start": "npm run build && npm run start:backend"
+  },  "dependencies": {
+    "@elevenlabs/client": "latest",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "axios": "^1.6.0",
-    "body-parser": "^1.20.2",
-    "path": "^0.12.7"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
-  "keywords": ["screener", "firecrawl", "stocks", "financial-data"],
-  "author": "",
-  "license": "MIT"
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "concurrently": "^8.0.1",
+    "copy-webpack-plugin": "^11.0.0"
+  }
 }
