@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const fs = require("fs");
 const { spawn } = require("child_process");
 
 dotenv.config();
@@ -22,9 +23,6 @@ app.get("/api/signed-url", async (req, res) => {
     if (opponent === 'akshat') {
       // Akshat represents Singapore markets
       agentId = process.env.SINGAPORE_AGENT_ID; // agent_0501k86cmfndepn9a9hnb5q5x2j7
-    } else if (opponent === 'vikranth') {
-      // Vikranth represents Indian markets
-      agentId = process.env.INDIA_AGENT_ID; // agent_5401k86cnk7ffs4rzczf032xpv0f
     }
     
     console.log(`Using agent ID: ${agentId}`);
@@ -114,6 +112,61 @@ app.post("/api/sql-to-url", (req, res) => {
   } catch (error) {
     console.error('Error in SQL to URL conversion:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// API route for serving queries from CSV
+app.get("/api/queries", (req, res) => {
+  try {
+    const csvPath = path.join(__dirname, "../queries.csv");
+    
+    if (!fs.existsSync(csvPath)) {
+      return res.status(404).json({ error: "Queries file not found" });
+    }
+    
+    const csvContent = fs.readFileSync(csvPath, 'utf8');
+    const lines = csvContent.split('\n').filter(line => line.trim());
+    
+    if (lines.length <= 1) {
+      return res.json([]);
+    }
+    
+    // Parse CSV (simple parsing for our structured data)
+    const headers = lines[0].split(',').map(h => h.trim());
+    const queries = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const values = [];
+      let current = '';
+      let inQuotes = false;
+      
+      // Simple CSV parser that handles quoted strings
+      for (let j = 0; j < lines[i].length; j++) {
+        const char = lines[i][j];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          values.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      values.push(current.trim()); // Add the last value
+      
+      if (values.length === headers.length) {
+        const query = {};
+        headers.forEach((header, index) => {
+          query[header] = values[index].replace(/^"|"$/g, ''); // Remove quotes
+        });
+        queries.push(query);
+      }
+    }
+    
+    res.json(queries);
+  } catch (error) {
+    console.error('Error reading queries CSV:', error);
+    res.status(500).json({ error: 'Failed to load queries' });
   }
 });
 

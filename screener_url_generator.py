@@ -12,8 +12,15 @@ def convert_sql_to_screener_url(sql_query):
         str: Formatted Screener.in URL
     """
     try:
+        # Clean the input string to remove any invalid Unicode characters
+        # This handles surrogate characters and other encoding issues
+        cleaned_query = sql_query.encode('utf-8', errors='ignore').decode('utf-8')
+        
+        # Further clean any remaining problematic characters
+        cleaned_query = ''.join(char for char in cleaned_query if ord(char) < 65536)
+        
         # Handle line breaks - convert to %0D%0A format for Screener.in
-        query_with_breaks = sql_query.replace('\n', '\r\n')
+        query_with_breaks = cleaned_query.replace('\n', '\r\n')
         
         # URL encode the entire query
         encoded_query = urllib.parse.quote_plus(query_with_breaks)
@@ -32,9 +39,15 @@ def convert_sql_to_screener_url(sql_query):
         
     except Exception as e:
         print(f"Error converting SQL to Screener URL: {e}")
-        # Fallback: simple encoding
-        simple_encoded = urllib.parse.quote_plus(sql_query)
-        return f"https://www.screener.in/screen/raw/?query={simple_encoded}"
+        # Fallback: clean and simple encoding
+        try:
+            cleaned_fallback = sql_query.encode('utf-8', errors='ignore').decode('utf-8')
+            cleaned_fallback = ''.join(char for char in cleaned_fallback if ord(char) < 65536)
+            simple_encoded = urllib.parse.quote_plus(cleaned_fallback)
+            return f"https://www.screener.in/screen/raw/?query={simple_encoded}"
+        except:
+            # Ultimate fallback
+            return "https://www.screener.in/screen/raw/?query="
 
 def generate_screener_url_from_conditions(conditions):
     """

@@ -111,8 +111,7 @@ function createCelebrityAvatar(opponent) {
         'nelson': 'nelson.mp4',
         'michelle': 'barbarella.mp4',
         'taylor': 'taylor.mp4',
-    'akshat': 'akshat.mp4',
-    'vikranth': 'vikranth.mp4'
+    'akshat': 'akshat.mp4'
     };
     
     // Fallback image map - only used if video fails completely
@@ -121,8 +120,7 @@ function createCelebrityAvatar(opponent) {
         'nelson': 'nelson.jpg', 
         'taylor': 'taylor.jpg',
         'singapore_uncle': 'singapore_uncle.jpg',
-    'akshat': 'akshat.jpg',
-    'vikranth': 'vikranth.jpg'
+    'akshat': 'akshat.jpg'
     };
     
     const videoSrc = videoMap[opponent];
@@ -393,8 +391,6 @@ function selectOpponent(opponentValue) {
     document.body.classList.remove('body-singapore-theme', 'body-india-theme');
     if (opponentValue === 'akshat') {
         document.body.classList.add('body-singapore-theme');
-    } else if (opponentValue === 'vikranth') {
-        document.body.classList.add('body-india-theme');
     }
     
     console.log(`Selected opponent: ${opponentValue}`);
@@ -1570,8 +1566,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set the market theme without changing button selection
         if (initialOpponent === 'akshat') {
             document.body.classList.add('body-singapore-theme');
-        } else if (initialOpponent === 'vikranth') {
-            document.body.classList.add('body-india-theme');
         }
     }
     

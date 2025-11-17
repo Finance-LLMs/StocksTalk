@@ -1,8 +1,8 @@
 /* Conversational Insurance Agents Interface Styles */
 
-/* CSS Custom Properties for consistent theming with Indian colors */
+/* CSS Custom Properties for consistent theming */
 :root {
-    --primary-gradient: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%); /* Indian flag colors */
+    --primary-gradient: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #FFD700 100%); /* Gold and white colors */
     --secondary-gradient: linear-gradient(135deg, #FFD700 0%, #B8860B 50%, #CD7F32 100%); /* Gold/wealth colors */
     --glass-bg: rgba(255, 255, 255, 0.15);
     --glass-border: rgba(255, 215, 0, 0.3); /* Golden borders */
@@ -22,7 +22,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 30%, #138808 60%, #FFD700 90%); /* Indian flag colors with gold */
+    background: linear-gradient(135deg, #ed2939 0%, #FFFFFF 30%, #ed2939 60%, #FFD700 90%); /* Singapore colors with gold */
     background-size: 400% 400%;
     background-attachment: fixed;
     animation: gradientShift 15s ease infinite;
@@ -96,7 +96,7 @@ body::before {
     z-index: 1;
 }
 
-/* Add floating orbs for extra visual appeal - Indian finance theme */
+/* Add floating orbs for extra visual appeal - Finance theme */
 body::after {
     content: '';
     position: fixed;
@@ -1320,14 +1320,7 @@ body::after {
         0 15px 35px -5px rgba(237, 41, 57, 0.3);
 }
 
-/* Indian market style */
-.opponent-button[data-opponent="vikranth"].selected {
-    background: linear-gradient(135deg, rgba(255, 153, 51, 0.2), rgba(19, 136, 8, 0.2));
-    border-color: rgba(19, 136, 8, 0.7);
-    box-shadow: 
-        0 0 0 3px rgba(19, 136, 8, 0.2),
-        0 15px 35px -5px rgba(255, 153, 51, 0.3);
-}
+
 
 .opponent-button:disabled {
     opacity: 0.4;

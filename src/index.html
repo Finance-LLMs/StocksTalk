@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversational Insurance Agents</title>
-    <meta name="description" content="Have real-time conversations with AI insurance advisors" />
+    <title>Stock Market SQL Query Assistant</title>
+    <meta name="description" content="Execute SQL queries on stock market data with AI assistance" />
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/static/avatar.css">
     <link rel="stylesheet" href="/static/market-themes.css">
@@ -13,55 +13,67 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --light-blue: #dbeafe;
+            --dark-navy: #1e293b;
+            --slate-gray: #64748b;
+            --light-gray: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
         body {
-            background: #1a4d3a;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
+            color: var(--dark-navy);
+            line-height: 1.6;
         }
-        
 
         .debate-container {
             min-height: 100vh;
-            padding: 20px;
+            padding: 4px 6px;
+            padding-top: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .debate-interface {
-            display: flex;
-            height: auto;
-            max-height: 600px;
-            gap: 8px;
-            align-items: stretch;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 14px;
+            width: 100%;
+            max-width: 750px;
+            align-items: start;
         }
 
         .control-card {
-            flex: 0 0 280px;
-            max-width: 280px;
-            min-width: 260px;
-            height: 500px;
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.25), rgba(255, 215, 0, 0.2));
-            backdrop-filter: blur(20px);
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: 6px;
             padding: 12px;
-            border: 2px solid rgba(255, 215, 0, 0.6);
-            box-shadow: 0 20px 40px rgba(255, 153, 51, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.1);
-            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            min-height: 320px;
         }
 
         .avatar-card {
-            flex: 1;
-            height: 500px;
-            background: linear-gradient(135deg, rgba(19, 136, 8, 0.2), rgba(255, 153, 51, 0.25));
-            backdrop-filter: blur(20px);
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: 6px;
             padding: 12px;
-            border: 2px solid rgba(255, 215, 0, 0.6);
-            box-shadow: 0 20px 40px rgba(19, 136, 8, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -71,60 +83,59 @@
         .card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 12px;
-            background: linear-gradient(90deg, rgba(255, 153, 51, 0.4), rgba(255, 215, 0, 0.4));
-            border-radius: 8px;
-            padding: 8px 12px;
-            border: 1px solid rgba(255, 215, 0, 0.5);
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .header-icon {
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.6), rgba(19, 136, 8, 0.6));
-            padding: 4px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: var(--shadow-sm);
         }
 
         .header-icon svg {
-            color: #FFFFFF;
-            width: 20px;
-            height: 20px;
-            filter: drop-shadow(0 2px 4px rgba(229, 62, 62, 0.7));
+            color: var(--white);
+            width: 14px;
+            height: 14px;
         }
 
         .header-text h2 {
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 0 0 2px 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            color: var(--dark-navy);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 1px 0;
+            letter-spacing: -0.025em;
         }
 
         .header-text p {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--slate-gray);
             margin: 0;
             font-size: 0.7rem;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            font-weight: 400;
         }
         
         .finance-header {
-            background: linear-gradient(90deg, rgba(255, 153, 51, 0.7), rgba(255, 215, 0, 0.7));
-            padding: 10px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: var(--white);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
             text-align: center;
-            border: 2px solid rgba(255, 215, 0, 0.8);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
         }
         
         .finance-header h1 {
-            color: #000;
-            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.25rem;
             margin: 0;
             font-weight: 700;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+            letter-spacing: -0.025em;
         }
 
         .form-controls {
@@ -137,166 +148,219 @@
 
         .control-group label {
             display: block;
-            color: white;
+            color: var(--dark-navy);
             font-weight: 600;
             margin-bottom: 4px;
-            font-size: 0.8rem;
-        }
-
-        .control-select {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid rgba(229, 62, 62, 0.6);
-            border-radius: 8px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(229, 62, 62, 0.2));
-            color: white;
-            font-size: 0.8rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .control-select option {
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-        }
-
-        .control-select:focus {
-            outline: none;
-            border-color: rgba(229, 62, 62, 0.9);
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(229, 62, 62, 0.3));
-            box-shadow: 0 0 15px rgba(229, 62, 62, 0.5);
+            font-size: 0.75rem;
+            letter-spacing: -0.025em;
         }
 
         .opponent-buttons {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            grid-template-columns: 1fr;
+            gap: 6px;
         }
 
         .opponent-button {
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.3), rgba(255, 215, 0, 0.3));
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            border-radius: 10px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             padding: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .opponent-button:hover {
-            transform: translateY(-5px);
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.5), rgba(255, 215, 0, 0.4));
-            border-color: rgba(255, 215, 0, 0.8);
-            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--secondary-blue);
         }
 
         .opponent-button.selected {
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.7), rgba(255, 215, 0, 0.7));
-            border-color: rgba(255, 215, 0, 1);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, var(--light-blue), var(--white));
+            border-color: var(--secondary-blue);
+            box-shadow: 0 8px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        .opponent-info {
+            flex: 1;
+            text-align: left;
         }
 
         .opponent-name {
-            color: white;
-            font-weight: 700;
+            color: var(--dark-navy);
+            font-weight: 600;
             font-size: 0.75rem;
-            margin-bottom: 2px;
-            text-align: center;
+            margin-bottom: 1px;
+            letter-spacing: -0.025em;
         }
 
         .opponent-desc {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--slate-gray);
             font-size: 0.65rem;
-            text-align: center;
+            font-weight: 400;
+        }
+
+        .flag-icon {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            object-fit: cover;
+            box-shadow: var(--shadow-sm);
         }
 
         .ai-text {
-            color: #FFD700;
-            font-weight: 800;
+            color: var(--secondary-blue);
+            font-weight: 700;
+        }
+        
+        .query-section {
+            margin-bottom: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .control-select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--white);
+            color: var(--dark-navy);
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .control-select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .sql-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--white);
+            color: var(--dark-navy);
+            font-size: 0.7rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            line-height: 1.3;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+        
+        .sql-textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .sql-textarea::placeholder {
+            color: var(--slate-gray);
+            opacity: 0.7;
         }
 
         .button-row, .recording-section {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .record-button, .qna-button, #startScriptedAI {
-            padding: 10px 14px;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: white;
+            transition: all 0.2s ease;
+            color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
+            letter-spacing: -0.025em;
         }
 
         #startScriptedAI, .qna-button {
-            background: linear-gradient(135deg, #FF9933, #FFD700);
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
         }
 
         #startScriptedAI:hover, .qna-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.6);
-            background: linear-gradient(135deg, #FFD700, #FF9933);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: linear-gradient(135deg, var(--secondary-blue), #60a5fa);
         }
 
         .record-button {
-            background: linear-gradient(135deg, #FF9933, #138808);
-            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, var(--secondary-blue), #60a5fa);
+            border-color: var(--secondary-blue);
+            box-shadow: var(--shadow-sm);
         }
 
         .record-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 153, 51, 0.6);
-            background: linear-gradient(135deg, #FF9933, #FFD700);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .stop-button {
-            background: linear-gradient(135deg, #138808, #FF9933) !important;
-            box-shadow: 0 10px 20px rgba(19, 136, 8, 0.6) !important;
+            background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+            border-color: #dc2626 !important;
+        }
+
+        .stop-button:hover {
+            background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
         }
 
         .summary-button {
-            background: linear-gradient(135deg, #FF9933, #138808) !important;
-            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.4) !important;
+            background: linear-gradient(135deg, #059669, #10b981) !important;
+            border-color: #059669 !important;
+        }
+
+        .summary-button:hover {
+            background: linear-gradient(135deg, #047857, #059669) !important;
         }
 
         .record-button:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
 
+        .record-button:disabled:hover {
+            transform: none;
+            box-shadow: var(--shadow-sm);
+        }
+
         .avatar-wrapper {
             width: 100%;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            height: 280px;
+            background: var(--light-gray);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
             position: relative;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
         }
 
         .no-agent-message {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
+            color: var(--slate-gray);
+            font-size: 0.9rem;
             text-align: center;
+            font-weight: 500;
+            letter-spacing: -0.025em;
         }
 
         .celebrity-avatar-container {
@@ -309,33 +373,31 @@
         }
 
         .celebrity-video {
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
-            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
         }
 
         .speaking-indicator {
             position: absolute;
-            bottom: 10px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 4px;
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.9), rgba(255, 215, 0, 0.9));
+            gap: 3px;
+            background: var(--white);
             padding: 8px 12px;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
         }
 
         .speaking-wave {
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(to top, #FFFFFF, #FF9933);
+            width: 3px;
+            height: 16px;
+            background: linear-gradient(to top, var(--secondary-blue), #60a5fa);
             border-radius: 2px;
             animation: wave 1.4s ease-in-out infinite;
-            box-shadow: 0 0 8px rgba(255, 153, 51, 0.7);
         }
 
         .speaking-wave:nth-child(2) {
@@ -353,31 +415,33 @@
 
         #connectionStatus, #speakingStatus {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
+            top: 24px;
+            right: 24px;
+            background: var(--white);
+            color: var(--dark-navy);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
         }
 
         #speakingStatus {
-            top: 60px;
+            top: 72px;
         }
 
         #connectionStatus.connected {
-            background: linear-gradient(135deg, rgba(255, 153, 51, 0.9), rgba(19, 136, 8, 0.9));
-            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-color: #10b981;
+            color: #047857;
         }
 
         #speakingStatus.speaking {
-            background: linear-gradient(135deg, rgba(19, 136, 8, 0.9), rgba(255, 153, 51, 0.9));
-            box-shadow: 0 4px 15px rgba(19, 136, 8, 0.5);
-            border: 2px solid rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, var(--light-blue), #bfdbfe);
+            border-color: var(--secondary-blue);
+            color: var(--primary-blue);
         }
 
         .hidden {
@@ -386,66 +450,55 @@
 
         @media (max-width: 768px) {
             .debate-container {
-                padding: 6px;
+                padding: 8px;
+                margin-top: 20px;
             }
             
-            .footer-disclaimer {
-                font-size: 0.65rem;
-                padding: 10px 12px;
-                margin: 15px auto 0;
-                max-width: 95%;
+            .finance-header {
+                padding: 24px 20px;
+                margin-bottom: 24px;
+            }
+            
+            .finance-header h1 {
+                font-size: 1.75rem;
             }
             
             .debate-interface {
-                flex-direction: column;
-                gap: 6px;
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .control-card, .avatar-card {
-                max-width: 100%;
-                min-width: auto;
-                padding: 10px;
+                min-height: auto;
+                padding: 20px;
             }
             
-            .opponent-buttons {
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-            }
-            
-            .language-buttons {
-                gap: 3px;
-            }
-            
-            .language-button {
-                padding: 6px;
-            }
-            
-            .language-name {
-                font-size: 0.6rem;
+            .avatar-wrapper {
+                height: 360px;
             }
 
             .header-text h2 {
-                font-size: 1rem;
+                font-size: 1.125rem;
             }
 
             .header-text p {
-                font-size: 0.65rem;
+                font-size: 0.8rem;
             }
 
             .opponent-button {
-                padding: 6px;
+                padding: 12px;
             }
 
             .opponent-name {
-                font-size: 0.7rem;
+                font-size: 0.8rem;
             }
 
             .opponent-desc {
-                font-size: 0.6rem;
+                font-size: 0.7rem;
             }
 
             .record-button, .qna-button, #startScriptedAI {
-                padding: 8px 12px;
+                padding: 10px 16px;
                 font-size: 0.8rem;
             }
         }
@@ -454,11 +507,11 @@
 <body>
     <div class="debate-container">
         <div class="finance-header">
-            <h1>Conversational Insurance Agents</h1>
+            <h1>Stock Market SQL Assistant</h1>
         </div>
         
-        <div id="connectionStatus" class="hidden">Disconnected</div>
-        <div id="speakingStatus" class="hidden">Agent Silent</div>
+        <div id="connectionStatus" class="hidden">Database Disconnected</div>
+        <div id="speakingStatus" class="hidden">Query Ready</div>
         
         <!-- Main Debate Interface -->
         <div class="debate-interface">
@@ -467,49 +520,58 @@
                 <div class="card-header">
                     <div class="header-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                            <path d="M12 14l-6.16-3.422a12.083 12.083 0 00-.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 006.824-2.998 12.078 12.078 0 00-.665-6.479L12 14z"></path>
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
                         </svg>
                     </div>                    <div class="header-text">
-                        <h2>Insurance Advisors</h2>
-                        <p>Have conversations with AI insurance experts</p>
+                        <h2>SQL Query Assistant</h2>
+                        <p>Execute queries on stock market databases</p>
                     </div>
                 </div>
 
                 <div class="form-controls">
                     
                     <div class="control-group">
-                        <label>Choose Your Advisor</label>
+                        <label>Choose Your SQL Analyst</label>
                         <div class="opponent-buttons">
                             <button type="button" class="opponent-button" data-opponent="akshat">
                                 <img src="/static/flags/singapore.png" alt="Singapore Flag" class="flag-icon">
                                 <div class="opponent-info">
-                                    <div class="opponent-name"><span class="ai-text">AI</span>kshat</div>
-                                    <div class="opponent-desc">Singapore</div>
-                                </div>
-                            </button>
-                            <button type="button" class="opponent-button" data-opponent="vikranth">
-                                <img src="/static/flags/india.png" alt="Indian Flag" class="flag-icon">
-                                <div class="opponent-info">
-                                    <div class="opponent-name">V<span class="ai-text">AI</span>kranth</div>
-                                    <div class="opponent-desc">India</div>
+                                    <div class="opponent-name"><span class="ai-text">SQL</span>kshat</div>
+                                    <div class="opponent-desc">Stock Market Expert</div>
                                 </div>
                             </button>
                         </div>
                     </div>
-                </div>                <div class="recording-section">                    <button id="startButton" class="record-button" disabled>
+                </div>
+                
+                <div class="query-section">
+                    <div class="control-group">
+                        <label>Quick Stock Queries</label>
+                        <select class="control-select" id="quickQueries">
+                            <option value="">Loading queries...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Custom SQL Query</label>
+                        <textarea class="sql-textarea" id="customQuery" placeholder="Enter your SQL query here...\n\nExample:\nSELECT symbol, company_name, price, change_percent\nFROM stocks\nWHERE change_percent > 5\nORDER BY change_percent DESC\nLIMIT 10;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="recording-section">                    <button id="startButton" class="record-button" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m12 8-9.04 4.9a2.78 2.78 0 0 0 0 4.9L12 24l9.04-4.9a2.78 2.78 0 0 0 0-4.9L12 8Z"/>
                         </svg>
-                        Start Insurance Consultation
+                        Start SQL Query Session
                     </button>                    <button id="endButton" class="record-button stop-button" disabled style="display: none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="m9 9 6 6"/>
                             <path d="m15 9-6 6"/>
                         </svg>
-                        End Consultation
+                        End Query Session
                     </button>
                     <button id="summaryButton" class="record-button summary-button" disabled style="display: none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -520,7 +582,7 @@
                             <line x1="3" y1="12" x2="3.01" y2="12"></line>
                             <line x1="3" y1="18" x2="3.01" y2="18"></line>
                         </svg>
-                        Close Conversation
+                        Export Results
                     </button>
                     <button id="sqlQueryButton" class="record-button sql-query-button" disabled style="display: none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -529,7 +591,7 @@
                             <path d="M8 7h8"></path>
                             <path d="M8 11h8"></path>
                         </svg>
-                        Generate SQL Query
+                        Execute Custom Query
                     </button>
                 </div>
             </div>
@@ -538,7 +600,7 @@
             <div class="avatar-card">
                 <div id="animatedAvatar" class="avatar-wrapper">
                     <div class="no-agent-message">
-                        Select a financial advisor to begin
+                        Select a SQL analyst to begin querying
                     </div>
                 </div>
             </div>
@@ -548,9 +610,43 @@
             <script src="/static/app-bundle.js"></script>
     <script>
         let selectedAgent = null;
-        let currentTopic = '';
+        let currentQuery = '';
+        let queriesData = [];
         
-        // Agent selection functionality
+        // Load queries from CSV on page load
+        async function loadQueries() {
+            try {
+                const response = await fetch('/api/queries');
+                if (response.ok) {
+                    queriesData = await response.json();
+                    populateQueryDropdown();
+                } else {
+                    console.error('Failed to load queries');
+                    // Fallback to default option
+                    document.getElementById('quickQueries').innerHTML = '<option value="">Select a predefined query...</option>';
+                }
+            } catch (error) {
+                console.error('Error loading queries:', error);
+                // Fallback to default option
+                document.getElementById('quickQueries').innerHTML = '<option value="">Select a predefined query...</option>';
+            }
+        }
+        
+        // Populate dropdown with loaded queries
+        function populateQueryDropdown() {
+            const dropdown = document.getElementById('quickQueries');
+            dropdown.innerHTML = '<option value="">Select a predefined query...</option>';
+            
+            queriesData.forEach(query => {
+                const option = document.createElement('option');
+                option.value = query.id;
+                option.textContent = query.name;
+                option.title = query.description; // Tooltip with description
+                dropdown.appendChild(option);
+            });
+        }
+        
+        // SQL Analyst selection functionality
         document.querySelectorAll('.opponent-button').forEach(button => {
             button.addEventListener('click', function() {
                 // Remove selection from all buttons
@@ -560,7 +656,7 @@
                 this.classList.add('selected');
                 
                 // Store selected agent
-                selectedAgent = this.dataset.agent;
+                selectedAgent = this.dataset.opponent;
                 
                 // Enable buttons
                 updateButtonStates();
@@ -570,19 +666,77 @@
             });
         });
         
-        // Topic selection functionality
-        document.getElementById('topic').addEventListener('change', function() {
-            currentTopic = this.value;
+        // Query selection functionality
+        document.getElementById('quickQueries').addEventListener('change', function() {
+            currentQuery = this.value;
+            
+            // Find the selected query in the loaded data
+            const selectedQueryData = queriesData.find(q => q.id === currentQuery);
+            if (selectedQueryData) {
+                // Populate the custom query textarea with the selected query
+                document.getElementById('customQuery').value = selectedQueryData.query.trim();
+            } else if (currentQuery === '') {
+                // Clear the textarea if no query is selected
+                document.getElementById('customQuery').value = '';
+            }
+            
             updateButtonStates();
         });
+        
+        // Add Enter key functionality to SQL textarea
+        document.getElementById('customQuery').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                
+                const sqlQuery = this.value.trim();
+                if (sqlQuery) {
+                    // Generate screener URL and open in new tab
+                    generateScreenerUrl(sqlQuery);
+                } else {
+                    alert('Please enter a SQL query first');
+                }
+            }
+        });
+        
+        // Function to generate screener URL
+        async function generateScreenerUrl(sqlQuery) {
+            try {
+                // Send the SQL query to backend to generate screener URL
+                const response = await fetch('/api/sql-to-url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sqlQuery: sqlQuery })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.url) {
+                        // Open the screener URL in a new tab
+                        window.open(data.url, '_blank');
+                    } else {
+                        throw new Error('No URL returned from server');
+                    }
+                } else {
+                    throw new Error('Failed to generate screener URL');
+                }
+            } catch (error) {
+                console.error('Error generating screener URL:', error);
+                // Fallback: try to create a simple URL client-side
+                const encodedQuery = encodeURIComponent(sqlQuery);
+                const fallbackUrl = `https://www.screener.in/screen/raw/?query=${encodedQuery}`;
+                window.open(fallbackUrl, '_blank');
+            }
+        }
         
         function updateButtonStates() {
             const startButton = document.getElementById('startButton');
             const hasAgent = selectedAgent !== null;
-            const hasTopic = currentTopic.length > 0;
+            const hasQuery = currentQuery.length > 0 || document.getElementById('customQuery').value.trim().length > 0;
             
             if (startButton) {
-                startButton.disabled = !hasAgent || !hasTopic;
+                startButton.disabled = !hasAgent;
             }
         }
         
@@ -595,26 +749,6 @@
                     <div class="celebrity-avatar-container">
                         <video 
                             src="/static/videos/akshat.mp4" 
-                            class="celebrity-video"
-                            muted
-                            loop
-                            playsinline
-                            preload="auto"
-                            id="avatarVideo"
-                            style="display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 15px;"
-                        ></video>
-                        <div class="speaking-indicator" id="speakingIndicator" style="display: none;">
-                            <div class="speaking-wave"></div>
-                            <div class="speaking-wave"></div>
-                            <div class="speaking-wave"></div>
-                        </div>
-                    </div>
-                `;
-            } else if (agent === 'vikranth') {
-                container.innerHTML = `
-                    <div class="celebrity-avatar-container">
-                        <video 
-                            src="/static/videos/vikranth.mp4" 
                             class="celebrity-video"
                             muted
                             loop
@@ -645,9 +779,14 @@
             }
         }
         
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQueries();
+        });
+        
         // Make functions available globally for the main app bundle
         window.selectedAgent = () => selectedAgent;
-        window.currentTopic = () => currentTopic;
+        window.currentQuery = () => currentQuery || document.getElementById('customQuery').value.trim();
         window.updateButtonStates = updateButtonStates;
         window.showAgentAvatar = showAgentAvatar;
     </script>

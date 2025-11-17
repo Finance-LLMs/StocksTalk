@@ -14,10 +14,9 @@ An interactive conversational AI platform that enables users to engage in insura
 - **Speaking Indicators**: Visual feedback showing when AI experts are responding
 - **Responsive Design**: Works seamlessly across desktop and mobile devices
 
-## 💼 Available Insurance Experts
+## 💼 Available Insurance Expert
 
 - **Akshat**: Singapore Expert - Specialized on Singapore insurance area
-- **Vikranth**: India Expert - Specialized on Singapore insurance area
 
 ## 🚀 Technology Stack
 
@@ -70,9 +69,8 @@ Add the following environment variables:
 ```env
 API_KEY=`your_api_key`
 
-# Country-specific Agents
+# Country-specific Agent
 SINGAPORE_AGENT_ID=`singapore_agent_id`     # Akshat - Singapore
-INDIA_AGENT_ID=`india_agent_id`             # Vikranth - India
 ```
 
 ### 3. Install Dependencies
@@ -103,7 +101,7 @@ http://localhost:3000
 ## 🎯 Usage Guide
 
 1. **Access the Dashboard**: Open the application to see the Conversation Insurance Agents
-3. **Select Country Advisor**: Choose from available AI insurance advisors (Akshat for Singapore or Vikranth for India)
+3. **Select Advisor**: Choose the available AI insurance advisor (Akshat for Singapore)
 4. **Start Consultation**: Click "Start Insurance Consultation" to begin your voice conversation
 5. **Insurance Discussion**: Ask questions about different insurance policies, the evolving area of insurance or seek insurance advice
 6. **End Session**: Click "End Consultation" when finished
@@ -119,8 +117,7 @@ Conversational-Insurance-Agents/
 │   ├── app.js              # Core application logic
 │   ├── styles.css          # Global styles with responsive design
 │   └── videos/             # Expert video avatars
-│       ├── akshat.mp4      # Akshat video
-│       └── vikranth.mp4    # Vikranth video
+│       └── akshat.mp4      # Akshat video
 ├── dist/                   # Webpack build output
 ├── .env                    # Environment variables (not committed)
 ├── .gitignore              # Git ignore rules

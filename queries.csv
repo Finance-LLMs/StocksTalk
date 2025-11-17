@@ -1,0 +1,13 @@
+id,name,description,query
+top-gainers,Top 10 Stock Gainers Today,Find stocks with highest price gains today,"Market Capitalization > 1000 AND Price to earning > 0 AND Price to earning < 50"
+top-losers,Top 10 Stock Losers Today,Find stocks with highest price drops today,"Market Capitalization > 1000 AND Price to earning > 0"
+high-volume,Highest Volume Stocks,Stocks with exceptionally high trading volume,"Volume > 1000000 AND Market Capitalization > 5000"
+market-cap,Largest Companies by Market Cap,Top companies by market capitalization,"Market Capitalization > 50000"
+dividend-yield,Highest Dividend Yield Stocks,Companies offering attractive dividend yields,"Dividend yield > 3 AND Market Capitalization > 10000 AND Debt to equity < 1"
+price-earnings,Lowest P/E Ratio Stocks,Value stocks with low P/E ratios,"Price to earning > 0 AND Price to earning < 15 AND Market Capitalization > 5000 AND Return on equity > 15"
+sector-performance,Sector Performance Analysis,Analyze performance across different sectors,"Market Capitalization > 1000 AND Return on equity > 10 AND Return on capital employed > 12"
+high-roce,High ROCE Companies,Companies with excellent capital efficiency,"Return on capital employed > 25 AND Market Capitalization > 5000 AND Debt to equity < 0.5"
+debt-free,Debt-Free Companies,Companies with minimal or no debt,"Debt to equity < 0.1 AND Market Capitalization > 1000 AND Current ratio > 1.5"
+growth-stocks,High Growth Stocks,Companies showing strong growth metrics,"Sales growth > 20 AND Profit growth > 25 AND Return on equity > 20 AND Price to earning < 30"
+value-picks,Value Investment Picks,Undervalued stocks with strong fundamentals,"Price to earning > 0 AND Price to earning < 12 AND Price to book value < 1.5 AND Return on equity > 15 AND Debt to equity < 0.5"
+quality-stocks,Quality Stock Screener,High-quality companies with consistent performance,"Return on equity > 15 AND Return on capital employed > 15 AND Debt to equity < 1 AND Interest coverage ratio > 5 AND Current ratio > 1"

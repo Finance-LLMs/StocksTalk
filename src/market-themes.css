@@ -3,9 +3,3 @@
     background-size: 400% 400% !important;
     animation: gradientShift 15s ease infinite !important;
 }
-
-.body-india-theme {
-    background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 30%, #138808 60%, #000080 90%) !important;
-    background-size: 400% 400% !important;
-    animation: gradientShift 15s ease infinite !important;
-}
