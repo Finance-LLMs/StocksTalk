@@ -23,6 +23,12 @@ app.get("/api/signed-url", async (req, res) => {
     if (opponent === 'akshat') {
       // Akshat represents Singapore markets
       agentId = process.env.SINGAPORE_AGENT_ID; // agent_0501k86cmfndepn9a9hnb5q5x2j7
+    } else if (opponent === 'alex' || opponent === 'male') {
+      // Alex represents Male SQL Expert
+      agentId = process.env.MALE_AGENT_ID;
+    } else if (opponent === 'sarah' || opponent === 'female') {
+      // Sarah represents Female SQL Expert
+      agentId = process.env.FEMALE_AGENT_ID;
     }
     
     console.log(`Using agent ID: ${agentId}`);

@@ -98,7 +98,7 @@ body::before {
 }
 
 .avatar-wrapper {
-    width: 100%;
+    width: 200px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -110,6 +110,7 @@ body::before {
     overflow: hidden;
     /* Ensure proper centering */
     text-align: center;
+    margin: 0 auto;
 }
 
 /* Video wrapper for proper centering */
@@ -380,10 +381,10 @@ video#avatarVideo {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    width: auto !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
+    width: 330px !important;
+    height: 380px !important;
+    max-width: 330px !important;
+    max-height: 380px !important;
     object-fit: contain !important;
     position: absolute !important;
     top: 50% !important;
@@ -410,8 +411,8 @@ video#avatarVideo {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 100% !important;
-    height: 100% !important;
+    width: 80% !important;
+    height: 50% !important;
 }
 
 /* Ensure perfect video centering */

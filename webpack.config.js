@@ -25,7 +25,9 @@ module.exports = {
             patterns: [
                 { from: 'src/index.html', to: 'index.html' },
                 { from: 'src/styles.css', to: 'styles.css' },
+                { from: 'src/avatar.css', to: 'avatar.css' },
                 { from: 'src/market-themes.css', to: 'market-themes.css' },
+                { from: 'src/image.png', to: 'image.png' },
                 { from: 'src/videos', to: 'videos', noErrorOnMissing: true },
                 { from: 'src/flags', to: 'flags', noErrorOnMissing: true }
             ],
